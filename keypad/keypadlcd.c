@@ -94,7 +94,7 @@ int main(){
 				opPrint(calID,curOp);
 			}
 			digitalWrite(R1,1);
-			delay(100);
+			delay(50);
 
 			//R2에서 실행
 			digitalWrite(R1,1);
@@ -128,7 +128,7 @@ int main(){
 			}
 			
 			digitalWrite(R2,1);
-			delay(100);
+			delay(50);
 
 			//R3에서 실행
 			digitalWrite(R1,1);
@@ -162,16 +162,16 @@ int main(){
 			}
 
 			digitalWrite(R3,1);
-			delay(100);
+			delay(50);
 
 			//R4에서 실행
 			digitalWrite(R1,1);
 			digitalWrite(R2,1);
 			digitalWrite(R3,1);
 			digitalWrite(R4,0);
-			
+
 			if(digitalRead(C1)==0){
-				printf("=\n");
+				//printf("=\n");
 				for(int k = i-1, m=0; k>=0; k--,m++){
 					num2 +=numArr[m]*(pow(10,k));
 				}
@@ -181,7 +181,18 @@ int main(){
 					case '+' : printf(">> %d\n",num1+num2); numPrint(calID,num1+num2); break;
 					case '-' : printf(">> %d\n",num1-num2); numPrint(calID,num1-num2); break;
 					case '*' : printf(">> %d\n",num1*num2); numPrint(calID,num1*num2); break;
-					case '/' : printf(">> %d\n",num1/num2); numPrint(calID,num1/num2); break;
+					case '/' : {
+						if(num2==0){
+							lcdClear();
+							lcdLoc(LINE1);
+							typeln("Tuningkiwi cal");
+							lcdLoc(LINE2);
+							typeln("Can't be divided");
+						}else {
+							printf(">> %d\n",num1/num2); numPrint(calID,num1/num2); break;
+
+						}
+					}
 					default : break;
 				}
 				for(int j=0; j<10; j++){//numArr buffer clear
@@ -203,8 +214,9 @@ int main(){
 			}
 			if(digitalRead(C4)==0)
 			{	printf("/\n");
+					
 				for(int k=i-1,  m=0; k>=0;k--,m++){
-					num1 += (*(numArr+(m)))*(pow(10,k));
+					num1 += (numArr[m])*(pow(10,k));
 				}
 				i=0;
 			
@@ -212,7 +224,7 @@ int main(){
 				opPrint(calID,curOp);
 			}
 			digitalWrite(R4,1);
-			delay(100);
+			delay(50);
 
 	}
 
