@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <wiringPi.h>
+#include <wiringPiI2C.h>
 #include <math.h>
+#include "lcd1602.h"
 
 #define C4 6
 #define C3 13
@@ -11,9 +13,16 @@
 #define R3 20
 #define R4 21
 
+int xio;
+
+void numPrint(int*, int);
+void opPrint(int*, char);
+
 int main(){
 	printf("Rabery Pi - key pad \n");
 	wiringPiSetupGpio();
+	xio = wiringPiI2CSetup(I2C_ADDR);
+
 	//input pullUp
 //	pullUpDnControl(C1, PUD_UP);
 //	pullUpDnControl(C2, PUD_UP);
@@ -49,8 +58,10 @@ int main(){
 	//char operator[4]={'+','-','*','/'};
 	char curOp = 0;
 	int i=0;
-	while(1){
+	int cals =0;
+	int* calID =&cals;
 
+	while(1){
 
 			//R1에서 실행  
 			digitalWrite(R1,0);
@@ -59,18 +70,18 @@ int main(){
 			digitalWrite(R4,1);
 			
 			if(digitalRead(C1)==0){
-				printf("1\n");
 				numArr[i++]=1;
+				numPrint(calID,1);
 			}
 			if(digitalRead(C2)==0)
-			{	printf("2\n");
+			{	
 				numArr[i++]=2;
-
+				numPrint(calID,2);
 			}
 			if(digitalRead(C3)==0)
-			{	printf("3\n");
+			{	
 				numArr[i++]=3;
-
+				numPrint(calID,3);
 			}
 			if(digitalRead(C4)==0)
 			{	printf("+\n");
@@ -80,6 +91,7 @@ int main(){
 				i=0;
 				//num1 = *numArr;
 				curOp = '+';
+				opPrint(calID,curOp);
 			}
 			digitalWrite(R1,1);
 			delay(100);
@@ -91,24 +103,28 @@ int main(){
 			digitalWrite(R4,1);
 			
 			if(digitalRead(C1)==0){
-				printf("4\n");
+				//printf("4\n");
 				numArr[i++]=4;
+				numPrint(calID,4);
 			}
 			if(digitalRead(C2)==0){
-				printf("5\n");
+				//printf("5\n");
 				numArr[i++]=5;
+				numPrint(calID,5);
 			}
 			if(digitalRead(C3)==0)
-			{	printf("6\n");
+			{	//printf("6\n");
 				numArr[i++]=6;
+				numPrint(calID,6);
 			}
 			if(digitalRead(C4)==0)
 			{	printf("-\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
-					num1 += (*(numArr+(m)))*(pow(10,k));
+					num1 += (numArr[m])*(pow(10,k));
 				}
 				i=0;
 				curOp = '-';
+				opPrint(calID, curOp);
 			}
 			
 			digitalWrite(R2,1);
@@ -121,24 +137,28 @@ int main(){
 			digitalWrite(R4,1);
 			
 			if(digitalRead(C1)==0){
-				printf("7\n");
+				//printf("7\n");
 				numArr[i++]=7;
+				numPrint(calID,7);
 			}
 			if(digitalRead(C2)==0){
-				printf("8\n");
+				//printf("8\n");
 				numArr[i++]=8;
+				numPrint(calID,8);
 			}
 			if(digitalRead(C3)==0){
-				printf("9\n");
+				//printf("9\n");
 				numArr[i++]=9;
+				numPrint(calID,9);
 			}
 			if(digitalRead(C4)==0)
 			{	printf("*\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
-					num1 += (*(numArr+(m)))*(pow(10,k));
+					num1 += (numArr[m])*(pow(10,k));
 				}
 				i=0;
 				curOp = '*';
+				opPrint(calID,curOp);
 			}
 
 			digitalWrite(R3,1);
@@ -155,13 +175,13 @@ int main(){
 				for(int k = i-1, m=0; k>=0; k--,m++){
 					num2 +=numArr[m]*(pow(10,k));
 				}
+				opPrint(calID,'=');
 				i=0;
-				//num2 = *(numArr+1);
 				switch(curOp){
-					case '+' : printf(">> %d\n",num1+num2); break;
-					case '-' : printf(">> %d\n",num1-num2); break;
-					case '*' : printf(">> %d\n",num1*num2); break;
-					case '/' : printf(">> %d\n",num1/num2); break;
+					case '+' : printf(">> %d\n",num1+num2); numPrint(calID,num1+num2); break;
+					case '-' : printf(">> %d\n",num1-num2); numPrint(calID,num1-num2); break;
+					case '*' : printf(">> %d\n",num1*num2); numPrint(calID,num1*num2); break;
+					case '/' : printf(">> %d\n",num1/num2); numPrint(calID,num1/num2); break;
 					default : break;
 				}
 				for(int j=0; j<10; j++){//numArr buffer clear
@@ -169,14 +189,18 @@ int main(){
 				}
 				num1 = 0;
 				num2 =0;
+				cals =0;
 			
 			}
 			if(digitalRead(C2)==0){
-				printf("0\n");
+				//printf("0\n");
 				numArr[i++]=0;
+				numPrint(calID,0);
 			}
-			if(digitalRead(C3)==0)
-				printf("#\n");
+			if(digitalRead(C3)==0){
+				//printf("#\n");
+				opPrint(calID,'#');
+			}
 			if(digitalRead(C4)==0)
 			{	printf("/\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
@@ -185,6 +209,7 @@ int main(){
 				i=0;
 			
 				curOp = '/';
+				opPrint(calID,curOp);
 			}
 			digitalWrite(R4,1);
 			delay(100);
@@ -192,4 +217,25 @@ int main(){
 	}
 
 	return 0;
+}
+
+
+void numPrint(int* calID, int num){
+	
+	if(*calID==0){
+		lcdClear();
+		lcdLoc(LINE1);
+		typeln("TUNINGKIWI CAL");
+		lcdLoc(LINE2);
+		typeInt(num);
+		(*calID)++;
+	}else if(*calID>=1){
+		typeInt(num);
+	}
+
+}
+
+void opPrint(int* calID, char ch){
+	//lcdLoc(LINE1);
+	typeChar(ch);
 }

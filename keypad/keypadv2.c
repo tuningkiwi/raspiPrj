@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <wiringPi.h>
-#include <wiringPiI2C.h>
 #include <math.h>
-#include "lcd1602.h"
 
 #define C4 6
 #define C3 13
@@ -13,13 +11,9 @@
 #define R3 20
 #define R4 21
 
-int xio;
-
 int main(){
 	printf("Rabery Pi - key pad \n");
 	wiringPiSetupGpio();
-	xio = wiringPiI2CSetup(I2C_ADDR);
-
 	//input pullUp
 //	pullUpDnControl(C1, PUD_UP);
 //	pullUpDnControl(C2, PUD_UP);
@@ -56,13 +50,7 @@ int main(){
 	char curOp = 0;
 	int i=0;
 	while(1){
-			//lcd test
-			lcdClear();
-			lcdLoc(LINE1);
-			typeln("HELLO!");
-			delay(1000);
-			lcdLoc(LINE2);
-			typeln("world");
+
 
 			//R1에서 실행  
 			digitalWrite(R1,0);
