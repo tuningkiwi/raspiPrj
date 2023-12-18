@@ -12,7 +12,7 @@
 #define R3 20
 #define R4 21
 
-//LED ONOFF 
+//L	ED ONOFF 
 #define LED 23
 #define SUCCESS 1
 #define WRONG 0
