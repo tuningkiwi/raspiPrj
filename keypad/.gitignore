@@ -1,0 +1,9 @@
+#ignore all
+*
+
+# Unignore all with extensions
+!*.[ch]
+!Makefile
+# Unignore all dirs
+!*/
+

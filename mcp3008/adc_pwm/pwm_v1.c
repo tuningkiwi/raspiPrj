@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <softPwm.h>
+#include <wiringPiI2C.h>
 
 const int pinLed = 13;
 

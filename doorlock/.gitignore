@@ -1,0 +1,7 @@
+#ignore all
+*
+
+#Unignore all with extensions
+!*.[ch]
+!Makefile
+
