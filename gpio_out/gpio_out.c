@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <wiringPi.h>
 
-#define LED 21
+#define LED 13
 
 int main(){
 

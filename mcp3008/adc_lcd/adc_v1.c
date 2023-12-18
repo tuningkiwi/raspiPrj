@@ -2,7 +2,6 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 #include <mcp3004.h>
-#include <wiringPiI2C.h>
 #include "lcd1602.h"
 
 #define BASE 100 //가상의 핀 번호 
