@@ -128,7 +128,7 @@ int main(){
 			digitalWrite(R3,1);
 			digitalWrite(R4,0);
 
-			if(digitalRead(C1)==0){ //*
+			if(digitalRead(C1)==0){ 
 				
 				if(mode >=0){//default 
 					
