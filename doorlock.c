@@ -51,7 +51,6 @@ int main(){
 	pinMode(R2,OUTPUT);
 	pinMode(R3,OUTPUT);
 	pinMode(R4,OUTPUT);
-	pinMode(LED,OUTPUT);
 	//digitalWrite(R1,HIGH);
 
 	pullUpDnControl(C1, PUD_UP);
@@ -129,9 +128,9 @@ int main(){
 			digitalWrite(R4,0);
 
 			if(digitalRead(C1)==0){ //*
-				
+				printf("here!\n");
 				if(mode >=0){//default 
-					
+					printf("2here!\n");
 					int flag =0;
 					//비번이랑 맞는지 체크 
 					for(int el=0; el<pwLen; el++){
@@ -171,6 +170,7 @@ int main(){
 						numArr[el]=0;
 					}
 				}else if(mode <=-1){
+					printf("3here!\n");
 					//비번 세팅 완료 
 					printf("pw setting complete\n");
 
@@ -248,23 +248,19 @@ void numPrint(int num){
 		lcdLoc(LINE1);
 		typeln("PW INPUT");
 		lcdLoc(LINE2);
-		//typeInt(num);
-		typeChar('*');
+		typeInt(num);
 		mode++;
 	}else if(mode >0){
-        //typeInt(num);
-		typeChar('*');
+        typeInt(num);
     }else if(mode ==-1){//PW SET
         lcdClear();
 		lcdLoc(LINE1);
 		typeln("PW SET");
 		lcdLoc(LINE2);
-		//typeInt(num);
-		typeChar('*');
+		typeInt(num);
 		mode--;
     }else if(mode < -1){
-        //typeInt(num);
-		typeChar('*');
+        typeInt(num);
 
     }
 

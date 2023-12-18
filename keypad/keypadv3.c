@@ -50,21 +50,21 @@ int main(){
 			digitalWrite(R4,1);
 			
 			if(digitalRead(C1)==0){
-				printf("1");
+				printf("1\n");
 				numArr[i++]=1;
 			}
 			if(digitalRead(C2)==0)
-			{	printf("2");
+			{	printf("2\n");
 				numArr[i++]=2;
 
 			}
 			if(digitalRead(C3)==0)
-			{	printf("3");
+			{	printf("3\n");
 				numArr[i++]=3;
 
 			}
 			if(digitalRead(C4)==0)
-			{	printf("+");
+			{	printf("+\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
 					num1 += (numArr[m])*(pow(10,k));
 				}
@@ -73,7 +73,7 @@ int main(){
 				curOp = '+';
 			}
 			digitalWrite(R1,1);
-			delay(50);
+			delay(100);
 
 			//R2에서 실행
 			digitalWrite(R1,1);
@@ -82,19 +82,19 @@ int main(){
 			digitalWrite(R4,1);
 			
 			if(digitalRead(C1)==0){
-				printf("4");
+				printf("4\n");
 				numArr[i++]=4;
 			}
 			if(digitalRead(C2)==0){
-				printf("5");
+				printf("5\n");
 				numArr[i++]=5;
 			}
 			if(digitalRead(C3)==0)
-			{	printf("6");
+			{	printf("6\n");
 				numArr[i++]=6;
 			}
 			if(digitalRead(C4)==0)
-			{	printf("-");
+			{	printf("-\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
 					num1 += (*(numArr+(m)))*(pow(10,k));
 				}
@@ -103,7 +103,7 @@ int main(){
 			}
 			
 			digitalWrite(R2,1);
-			delay(50);
+			delay(100);
 
 			//R3에서 실행
 			digitalWrite(R1,1);
@@ -112,19 +112,19 @@ int main(){
 			digitalWrite(R4,1);
 			
 			if(digitalRead(C1)==0){
-				printf("7");
+				printf("7\n");
 				numArr[i++]=7;
 			}
 			if(digitalRead(C2)==0){
-				printf("8");
+				printf("8\n");
 				numArr[i++]=8;
 			}
 			if(digitalRead(C3)==0){
-				printf("9");
+				printf("9\n");
 				numArr[i++]=9;
 			}
 			if(digitalRead(C4)==0)
-			{	printf("*");
+			{	printf("*\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
 					num1 += (*(numArr+(m)))*(pow(10,k));
 				}
@@ -133,7 +133,7 @@ int main(){
 			}
 
 			digitalWrite(R3,1);
-			delay(50);
+			delay(100);
 
 			//R4에서 실행
 			digitalWrite(R1,1);
@@ -142,7 +142,7 @@ int main(){
 			digitalWrite(R4,0);
 			
 			if(digitalRead(C1)==0){
-				printf("=");
+				printf("=\n");
 				for(int k = i-1, m=0; k>=0; k--,m++){
 					num2 +=numArr[m]*(pow(10,k));
 				}
@@ -163,13 +163,13 @@ int main(){
 			
 			}
 			if(digitalRead(C2)==0){
-				printf("0");
+				printf("0\n");
 				numArr[i++]=0;
 			}
 			if(digitalRead(C3)==0)
-				printf("#");
+				printf("#\n");
 			if(digitalRead(C4)==0)
-			{	printf("/");
+			{	printf("/\n");
 				for(int k=i-1,  m=0; k>=0;k--,m++){
 					num1 += (*(numArr+(m)))*(pow(10,k));
 				}
@@ -178,7 +178,7 @@ int main(){
 				curOp = '/';
 			}
 			digitalWrite(R4,1);
-			delay(50);
+			delay(100);
 
 	}
 
