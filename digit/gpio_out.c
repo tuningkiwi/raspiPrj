@@ -105,10 +105,19 @@ int main(){
 	int num=0;
 	int num2 = 0;
 	int num3 = 0;
-	int count =5000;
+	int count =0;
 	int place = 0;
 	int result =0; 
 	int j = 0;
+
+
+
+	//digit 세팅 
+	for(int i = 0; i<4; i++){
+		digitalWrite(digPin[i],0);
+	}
+	delay(5);
+
 
 
 	//숫자 입력 받기 
@@ -187,16 +196,20 @@ int main(){
 	}
 
 	for(int i = 0; i<numArrCnt; i++){
-		printf("%d..",numArr[i]);
+		//printf("%d..",numArr[i]);
 		num2 += numArr[i]*pow(10,numArrCnt-1-i);
 	}
+
+	printf("YOUR DESTINATION: %d ",num2);
+	fflush(stdout);
+	delay(1000);
 
 	//scanf("%d",&num2);
 
 	for(int num=0; num <= num2 ;num++){
 		num3 = num;
 		//delay(100);
-		printf("%d-",num);
+		//printf("%d-",num);
 
 		
 		for(int i = 0; i <5; i++){//자릿수 확인
@@ -214,25 +227,11 @@ int main(){
 		}
 		
 		num = num3;
-		count = 100;
+		count = 10;
 		//delay(100);
-		while(count--){
-
-			for(int j = place-1; j >= 0 ; j--){
-				//digit 세팅 
-				for(int i = 0; i<4; i++){
-					digitalWrite(digPin[i],digCode[j][i]);
-				}
-				//첫번째로 입력한 숫자를 표시 
-				for(int k = 0; k< 8; k++){
-					digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
-				}
-				delay(5);
-
-			}
-		}
 
 		if(num == num2){
+			printf("\nArrived at %d\n",num);
 			while(1){
 
 				for(int j = place-1; j >= 0 ; j--){
@@ -251,24 +250,25 @@ int main(){
 
 		}
 
+		while(count--){
+
+			for(int j = place-1; j >= 0 ; j--){
+				//digit 세팅 
+				for(int i = 0; i<4; i++){
+					digitalWrite(digPin[i],digCode[j][i]);
+				}
+				//첫번째로 입력한 숫자를 표시 
+				for(int k = 0; k< 8; k++){
+					digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
+				}
+				delay(5);
+
+			}
+		}
+
+
 
 	}
-
-	while(1){
-
-	for(int j = place-1; j >= 0 ; j--){
-		//digit 세팅 
-		for(int i = 0; i<4; i++){
-			digitalWrite(digPin[i],digCode[j][i]);
-		}
-		//첫번째로 입력한 숫자를 표시 
-		for(int k = 0; k< 8; k++){
-			digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
-		}
-		delay(5);
-
-	}
-}
 
 	return 0;
 }
