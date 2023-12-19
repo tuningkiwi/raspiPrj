@@ -57,7 +57,10 @@ int digCode[4][4]={
 };
 
 
+int numArr[4];
+int numArrCnt =0;
 
+void typing(int num);
 
 int main(){
 
@@ -98,7 +101,7 @@ int main(){
 
 
 	//int count =5;
-	int numArr[4];
+
 	int num=0;
 	int num2 = 0;
 	int num3 = 0;
@@ -108,10 +111,87 @@ int main(){
 	int j = 0;
 
 
-	
+	//숫자 입력 받기 
+	while(1){
+			//row1 scan
+			
+			digitalWrite(R1,0);
+			digitalWrite(R2,1);
+			digitalWrite(R3,1);
+			digitalWrite(R4,1);
 
-	scanf("%d",&num2);
+			if(digitalRead(C1)==0){ //1
+                typing(1);
+			}
+			else if(digitalRead(C2)==0){ //2
+                typing(2);
+			}                        
+			else if(digitalRead(C3)==0){ //3
+                typing(3);
+			}
+         	digitalWrite(R1,1);
+			delay(50);	
 
+			//row2 scan
+			digitalWrite(R1,1);
+			digitalWrite(R2,0);
+			digitalWrite(R3,1);
+			digitalWrite(R4,1);
+
+			if(digitalRead(C1)==0){ //4
+                typing(4);
+			}
+			else if(digitalRead(C2)==0){ //5
+                typing(5);
+			}                        
+			else if(digitalRead(C3)==0){ //6
+                typing(6);
+			}
+         	digitalWrite(R2,1);
+			delay(50);	
+
+			//row3 scan
+			digitalWrite(R1,1);
+			digitalWrite(R2,1);
+			digitalWrite(R3,0);
+			digitalWrite(R4,1);
+
+			if(digitalRead(C1)==0){ //7
+                typing(7);
+			}
+			else if(digitalRead(C2)==0){ //8
+                typing(8);
+			}                        
+			else if(digitalRead(C3)==0){ //9
+                typing(9);
+			}
+         	digitalWrite(R3,1);
+			delay(50);	
+
+			//row4 	
+			digitalWrite(R1,1);
+			digitalWrite(R2,1);
+			digitalWrite(R3,1);
+			digitalWrite(R4,0);
+
+			if(digitalRead(C1)==0){ //*
+                break;
+			}
+			else if(digitalRead(C2)==0){ //0
+                typing(0);
+			}                        
+			
+         	digitalWrite(R4,1);
+			delay(50);	
+
+	}
+
+	for(int i = 0; i<numArrCnt; i++){
+		printf("%d..",numArr[i]);
+		num2 += numArr[i]*pow(10,numArrCnt-1-i);
+	}
+
+	//scanf("%d",&num2);
 
 	for(int num=0; num <= num2 ;num++){
 		num3 = num;
@@ -151,7 +231,50 @@ int main(){
 
 			}
 		}
+
+		if(num == num2){
+			while(1){
+
+				for(int j = place-1; j >= 0 ; j--){
+				//digit 세팅 
+				for(int i = 0; i<4; i++){
+					digitalWrite(digPin[i],digCode[j][i]);
+				}
+				//첫번째로 입력한 숫자를 표시 
+				for(int k = 0; k< 8; k++){
+					digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
+				}
+				delay(5);
+
+				}
+			}
+
+		}
+
+
 	}
 
+	while(1){
+
+	for(int j = place-1; j >= 0 ; j--){
+		//digit 세팅 
+		for(int i = 0; i<4; i++){
+			digitalWrite(digPin[i],digCode[j][i]);
+		}
+		//첫번째로 입력한 숫자를 표시 
+		for(int k = 0; k< 8; k++){
+			digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
+		}
+		delay(5);
+
+	}
+}
+
 	return 0;
+}
+
+
+void typing(int num){
+    numArr[numArrCnt++]=num;
+
 }
