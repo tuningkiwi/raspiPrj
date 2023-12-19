@@ -137,7 +137,7 @@ int main(){
 			}                        
 			else if(digitalRead(C3)==0){ //3
                 typing(3);
-			}
+			}else{}
          	digitalWrite(R1,1);
 			delay(50);	
 
@@ -155,7 +155,7 @@ int main(){
 			}                        
 			else if(digitalRead(C3)==0){ //6
                 typing(6);
-			}
+			}else{}
          	digitalWrite(R2,1);
 			delay(50);	
 
@@ -173,7 +173,7 @@ int main(){
 			}                        
 			else if(digitalRead(C3)==0){ //9
                 typing(9);
-			}
+			}else{}
          	digitalWrite(R3,1);
 			delay(50);	
 
@@ -188,31 +188,34 @@ int main(){
 			}
 			else if(digitalRead(C2)==0){ //0
                 typing(0);
-			}                        
+			}else{}                        
 			
          	digitalWrite(R4,1);
 			delay(50);	
 
 	}
 
+	//키패드로 입력받은 값을 다시 정수형태로 변환
 	for(int i = 0; i<numArrCnt; i++){
-		//printf("%d..",numArr[i]);
 		num2 += numArr[i]*pow(10,numArrCnt-1-i);
 	}
 
+	//목표층 출력 
 	printf("YOUR DESTINATION: %d ",num2);
 	fflush(stdout);
 	delay(1000);
 
+	//또는 사용자로부터 직접 입력을 받도록 함. 
 	//scanf("%d",&num2);
 
-	for(int num=0; num <= num2 ;num++){
-		num3 = num;
-		//delay(100);
-		//printf("%d-",num);
 
-		
-		for(int i = 0; i <5; i++){//자릿수 확인
+	//0층 부터 차례로 count up 하여, 목표층 도달할 때 정지한다
+	for(int num=0; num <= num2 ;num++){
+		//현재의 숫자를 임시로 저장 
+		num3 = num;
+
+		//place: 현재 숫자의 자릿수 , numArrCnt로 해도되는데..*/
+		for(int i = 0; i <5; i++){ 
 			result = num/ (int)(pow(10,i));
 			if (result ==0){
 				place = i;
@@ -220,17 +223,18 @@ int main(){
 			}
 			
 		}
+		//place = numArrCnt-1;
 
 		for(int i=0 ; i<place;i++){ //numArr 하나씩 넣어주기
 			numArr[i]=num/pow(10,place-1-i);
 			num = num % (int)(pow(10,place-1-i));
 		}
 		
-		num = num3;
-		count = 10;
+		num = num3;//
+		count = 5;
 		//delay(100);
 
-		if(num == num2){
+		if(num == num2){//목표층에 도달했을 경우 
 			printf("\nArrived at %d\n",num);
 			while(1){
 
@@ -250,7 +254,7 @@ int main(){
 
 		}
 
-		while(count--){
+		while(count--){//현재 층을 count 번 출력, 속도 조절 가능
 
 			for(int j = place-1; j >= 0 ; j--){
 				//digit 세팅 
