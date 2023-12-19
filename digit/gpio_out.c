@@ -70,6 +70,7 @@ int main(){
 	int numArr[4];
 	int num=0;
 	int num2 = 0;
+	int num3 = 0;
 	int count =5000;
 	int place = 0;
 	int result =0; 
@@ -78,8 +79,8 @@ int main(){
 	scanf("%d",&num2);
 
 
-	for(int num=num2; num >= 0 ;num--){
-		num2 =num;
+	for(int num=0; num <= num2 ;num++){
+		num3 = num;
 		//delay(100);
 		printf("%d-",num);
 
@@ -98,7 +99,7 @@ int main(){
 			num = num % (int)(pow(10,place-1-i));
 		}
 		
-		num = num2;
+		num = num3;
 		count = 100;
 		//delay(100);
 		while(count--){
