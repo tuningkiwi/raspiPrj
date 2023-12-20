@@ -3,11 +3,24 @@
 #include <wiringPiI2C.h>
 #include <math.h>
 
-#define DIG1 18
-#define DIG2 23
-#define DIG3 24
-#define DIG4 25
-#define LED_A 22
+
+//4digit configure output pin 
+/*   
+	 DIG1	DIG2   DIG3   DIG4
+	|--A-| |--A-| |--A-| |--A-|
+	F    B F    B F    B F    B
+	|    | |    | |    | |    |
+	|--G-| |--G-| |--G-| |--G-|
+	E	 C E	C E	   C E	  C
+	|	 | |	| |	   | |	  |
+	|--D-| |--D-| |--D-| |--D-|
+
+*/
+#define DIG1 18 //DIG1은 FND 왼쪽에서 1번째 자리를 의미. 
+#define DIG2 23 //DIG2는 FND 왼쪽에서 2번째 자리를 의미.
+#define DIG3 24 //DIG3는 FND 왼쪽에서 3번째 자리를 의미. 
+#define DIG4 25 //DIG4는 FND 왼쪽에서 4번째 자리를 의미. 
+#define LED_A 22 
 #define LED_B 17
 #define LED_C 14
 #define LED_D 8
@@ -16,11 +29,13 @@
 #define LED_G 4
 #define LED_DP 15
 
-#define C4 6
+
+//keypad configure input/output pin
+#define C4 6	//input
 #define C3 13
 #define C2 19
 #define C1 26
-#define R1 12
+#define R1 12 //output
 #define R2 16
 #define R3 20
 #define R4 21
@@ -44,7 +59,8 @@ int codeArr[10][8] ={
 	{0,0,0,0,1,0,0,1}, //9	
 };
 
-
+//digit pin
+ 
 int digPin[4]={
 	DIG1,DIG2,DIG3,DIG4
 };
@@ -99,18 +115,13 @@ int main(){
 	digitalWrite(R3,HIGH);
 	digitalWrite(R4,HIGH);
 
-
-	//int count =5;
-
 	int num=0;
-	int num2 = 0;
-	int num3 = 0;
+	int numDest = 0;
+	int numTemp = 0;
 	int count =0;
 	int place = 0;
 	int result =0; 
 	int j = 0;
-
-
 
 	//digit 세팅 
 	for(int i = 0; i<4; i++){
@@ -119,11 +130,18 @@ int main(){
 	delay(5);
 
 
-
-	//숫자 입력 받기 
+/**
+  * @brief  keypad (4x4) 버튼에 숫자를 지정하여 숫자입력을 받습니다. 
+  * 		R1신호를 0으로 보낼 때, 버튼을 누르면, 0의 신호가 입력핀으로 전달됩니다. 
+  *  		R1,R2,R3,R4는 OUTPUT으로 출력하고 
+  * 		C1,C2,C3,C4는 INPUT(PULL UP)으로 입력을 받습니다. 
+  * 		R1부터 순서대로 INPUT 신호가 0으로 잡히는지 여부를 스캔합니다. 
+  * @func  typing(parameter) 매개변수를 전달하여, 필요한 수행을 합니다.
+  * 		이 프로그램에서는 사용자가 입력한 숫자가 차례로 numArr[]에 전달 됩니다. 		 
+  * @break  R4: 0, C1 : 0 일때(*버튼을 누를 때) 사용자의 입력이 마친것으로 간주하고, while문을 탈출합니다. 
+  */
 	while(1){
 			//row1 scan
-			
 			digitalWrite(R1,0);
 			digitalWrite(R2,1);
 			digitalWrite(R3,1);
@@ -183,7 +201,7 @@ int main(){
 			digitalWrite(R3,1);
 			digitalWrite(R4,0);
 
-			if(digitalRead(C1)==0){ //*
+			if(digitalRead(C1)==0){ //* 를 누르면 while문을 탈출합니다. 
                 break;
 			}
 			else if(digitalRead(C2)==0){ //0
@@ -195,89 +213,99 @@ int main(){
 
 	}
 
-	//키패드로 입력받은 값을 다시 정수형태로 변환
+	//키패드로 입력받은 값을 다시 정수형태로 변환하여, 
+	//numDest에 저장합니다. 
 	for(int i = 0; i<numArrCnt; i++){
-		num2 += numArr[i]*pow(10,numArrCnt-1-i);
+		numDest += numArr[i]*pow(10,numArrCnt-1-i);
 	}
 
-	//목표층 출력 
-	printf("YOUR DESTINATION: %d ",num2);
+	//목표층을 터미널에 출력합니다. 
+	printf("YOUR DESTINATION: %d ",numDest);
 	fflush(stdout);
-	delay(1000);
+	delay(1000); //1초뒤 출력 시작합니다. 
 
-	//또는 사용자로부터 직접 입력을 받도록 함. 
-	//scanf("%d",&num2);
+	//또는 사용자로부터 터미널에서 직접 입력을 받을 수 있습니다 . 
+	//scanf("%d",&numDest);
 
+	/**	숫자 0 부터 차례로 count up 하여, 목표층 도달할 때 정지한다
+	*	@param	num		현재 출력하는 숫자 
+	*/ 
+	for(int num=0; num <= numDest ;num++){
+		//현재의 숫자를 numTemp에 임시로 저장합니다.  
+		numTemp = num;
 
-	//0층 부터 차례로 count up 하여, 목표층 도달할 때 정지한다
-	for(int num=0; num <= num2 ;num++){
-		//현재의 숫자를 임시로 저장 
-		num3 = num;
-
-		//place: 현재 숫자의 자릿수 , numArrCnt로 해도되는데..*/
+		/**
+		 * @brief  4digit이어서 최대 4자릿수 까지만 출력이 된다. 
+		 * @param  num 현재 출력해야할 숫자 
+		 * @param  place 현재 출력해야할 숫자의 자릿수. 
+		 * @example 현재 num이 1234이면 i가 4일 때 10^4으로 나누어야 break가 된다. 
+		 */
 		for(int i = 0; i <5; i++){ 
-			result = num/ (int)(pow(10,i));
+			result = num/ (int)(pow(10,i)); //
 			if (result ==0){
 				place = i;
 				break;
-			}
-			
+			}		
 		}
-		//place = numArrCnt-1;
+		//place = numArrCnt;
 
-		for(int i=0 ; i<place;i++){ //numArr 하나씩 넣어주기
-			numArr[i]=num/pow(10,place-1-i);
+		//numArr에 순서대로 하나씩 넣어주기
+		// num: 1234 인경우 numArr[0]:1, numArr[1]:2, numArr[2]:3, numArr[3]:4
+		for(int i=0 ; i<place;i++){ 
+			numArr[i]=num/pow(10,place-1-i); 
 			num = num % (int)(pow(10,place-1-i));
 		}
-		
-		num = num3;//
-		count = 5;
-		//delay(100);
 
-		if(num == num2){//목표층에 도달했을 경우 
-			printf("\nArrived at %d\n",num);
-			while(1){
+		num = numTemp;//임시로 저장한 값을 num에 재저장한다. 
+		count = 5;// count는 LED 출력 횟수. 이것으로 숫자 출력되는 속도를 조절할 수 있다. 
+		//LED는 깜빡이는 것이 순식간이라 사람의 눈에는 착시로 계속 켜져있는 것처럼 보인다. 
+ 
+		if(num == numDest){//목표층에 도달했을 경우 
+			printf("\nArrived at %d\n",num);//터미널에 도착했다는 메세지를 출력합니다. 
+			while(1){//해당 숫자 출력에서 정지해야 합니다. 
 
+				//자릿수 만큼의 반복을 시작
+				//현재 숫자의 가장 큰 자릿수부터 차례로 출력
+				// exam : 4자릿수이면, j는 digCode 배열을 index 3부터 0까지 순회합니다. 
 				for(int j = place-1; j >= 0 ; j--){
-				//digit 세팅 
-				for(int i = 0; i<4; i++){
-					digitalWrite(digPin[i],digCode[j][i]);
-				}
-				//첫번째로 입력한 숫자를 표시 
-				for(int k = 0; k< 8; k++){
-					digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
-				}
-				delay(5);
-
+					//digit위치의 digCode를 set
+					for(int i = 0; i<4; i++){
+						digitalWrite(digPin[i],digCode[j][i]);
+					}
+					//해당 digit 위치에 출력해야 하는 숫자(numArr[0]~)를 통해 찾고,
+					//찾은 값을 codeArr의 index로 주어서 출력합니다.  
+					for(int k = 0; k< 8; k++){
+						digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
+					}
+					//delay를 적절하게 주는 것도 중요합니다. 
+					delay(5);
 				}
 			}
-
 		}
 
 		while(count--){//현재 층을 count 번 출력, 속도 조절 가능
 
-			for(int j = place-1; j >= 0 ; j--){
-				//digit 세팅 
+			//자릿수 만큼의 반복을 시작
+			for(int j = place-1; j >= 0 ; j--){ 
+				//digit위치의 digCode를 set
 				for(int i = 0; i<4; i++){
 					digitalWrite(digPin[i],digCode[j][i]);
 				}
-				//첫번째로 입력한 숫자를 표시 
+				//해당 digit 위치에 출력해야 하는 숫자(numArr[0]~)를 통해 찾고,
+				//찾은 값을 codeArr의 index로 주어서 출력합니다. 
 				for(int k = 0; k< 8; k++){
 					digitalWrite(codePin[k],codeArr[numArr[place-1-j]][k]);	
 				}
 				delay(5);
-
 			}
 		}
-
-
-
 	}
 
 	return 0;
 }
 
 
+//전달 받은 num 값을  numArr에 순서대로 저장합니다. 
 void typing(int num){
     numArr[numArrCnt++]=num;
 
