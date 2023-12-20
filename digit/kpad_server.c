@@ -8,7 +8,8 @@
 int main(int argc, char** argv){
     int n, fd;
     char buf[BUFSIZ];
-
+    int num; 
+    //int numArr[4];
     unlink(FIFOFILE);
 
     if(mkfifo(FIFOFILE, 0666)<0){
@@ -22,8 +23,17 @@ int main(int argc, char** argv){
     }
 
     while((n=read(fd,buf,sizeof(buf)))>0){
-        printf("%s",buf);
+        num = atoi(buf);
+        printf("result : %d\n",num);   
+        //printf("%s",buf);
     }
+
+
+    printf("file end: %s",buf);
+
+    for(int i = 0; i<4; i++){
+		numDest += numArr[i]*pow(10,numArrCnt-1-i);
+	}
 
     close(fd);
     return 0;
