@@ -19,18 +19,18 @@
 	|--D-| |--D-| |--D-| |--D-|
 
 */
-#define DIG1 18 //DIG1은 FND 왼쪽에서 1번째 자리를 의미. 
-#define DIG2 23 //DIG2는 FND 왼쪽에서 2번째 자리를 의미.
-#define DIG3 24 //DIG3는 FND 왼쪽에서 3번째 자리를 의미. 
+#define DIG1 2 //DIG1은 FND 왼쪽에서 1번째 자리를 의미. 
+#define DIG2 17 //DIG2는 FND 왼쪽에서 2번째 자리를 의미.
+#define DIG3 27 //DIG3는 FND 왼쪽에서 3번째 자리를 의미. 
 #define DIG4 25 //DIG4는 FND 왼쪽에서 4번째 자리를 의미. 
-#define LED_A 22 
-#define LED_B 17
-#define LED_C 14
-#define LED_D 8
-#define LED_E 5
-#define LED_F 27
-#define LED_G 4
-#define LED_DP 15
+#define LED_A 3 
+#define LED_B 22
+#define LED_C 23
+#define LED_D 15
+#define LED_E 14
+#define LED_F 4
+#define LED_G 24
+#define LED_DP 18
 
 
 //keypad configure input/output pin
@@ -182,7 +182,7 @@ int main(){
         //목표층을 터미널에 출력합니다. 
         printf("YOUR DESTINATION: %d ",numDest);
         fflush(stdout);
-        delay(1000); //1초뒤 출력 시작합니다. 
+        //delay(1000); //1초뒤 출력 시작합니다. 
 
         if(numDest > beforeNumDest){
             beforeNumDest = up(numDest, beforeNumDest);
