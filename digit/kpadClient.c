@@ -121,9 +121,21 @@ int main(){
 			digitalWrite(R3,1);
 			digitalWrite(R4,0);
 
-			if(digitalRead(C1)==0){ 
-				write(fd,buf,sizeof(buf));
-				i=0;
+			if(digitalRead(C1)==0){
+				if(i%4==0){
+					
+				}else if(i%4==1){
+					buf[i++]='*';
+					buf[i++]='*';
+					buf[i++]='*';
+				}else if(i%4==2){
+					buf[i++]='*';
+					buf[i++]='*';
+				}else if(i%4==3){
+					buf[i++]='*';
+				}
+				write(fd,buf,4);
+				
                 //break;
 			}
 			else if(digitalRead(C2)==0){ // 0
