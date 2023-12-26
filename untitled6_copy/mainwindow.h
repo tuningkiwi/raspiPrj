@@ -23,18 +23,20 @@ public:
 
 private slots:
     void ExecuteProgram_txtmsg();
-    void ExecuteProgram_led20();
-    void ExecuteProgram_led21();
-    void led20kill();
-    void led21kill();
+    void ExecuteProgram_pro1();
+    void ExecuteProgram_pro2();
+    void pro1_kill();
+    void pro2_kill();
+    void txtmsg_kill();
 
     void PrintMsg();
+    // void PrintMsg_pro2();
 
 private:
     Ui::MainWindow *ui;
     QProcess *textMsgProcess;
-    QProcess *led20;
-    QProcess *led21;
+    QProcess *pro1;
+    QProcess *pro2;
 
 };
 #endif // MAINWINDOW_H
